@@ -36,5 +36,13 @@ export const getNavigationArray = ({ userType }) => {
       color: 'info',
     },
   })
+  _nav.push({  component: CNavItem,
+    name: 'Book Sold',
+    to: '/book-sold',
+    icon: <i className="pi pi-dollar pr-3" />,
+    badge: {
+      color: 'info',
+    },
+  })
   return _nav;
 };

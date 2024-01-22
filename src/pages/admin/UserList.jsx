@@ -45,7 +45,7 @@ const UserListTable = React.memo(
                         }}
                         size="small"
                         onClick={() =>
-                            navigatePageHandler(BUTTON_ACTIONS.view, rowData.id)
+                            navigatePageHandler(BUTTON_ACTIONS.view, rowData._id)
                         }
                     />
                     <Button
@@ -62,7 +62,7 @@ const UserListTable = React.memo(
                         onClick={() =>
                             navigatePageHandler(
                                 BUTTON_ACTIONS.update,
-                                rowData.id
+                                rowData._id
                             )
                         }
                     />
@@ -80,7 +80,7 @@ const UserListTable = React.memo(
                         onClick={() =>
                             navigatePageHandler(
                                 BUTTON_ACTIONS.delete,
-                                rowData.id
+                                rowData._id
                             )
                         }
                     />

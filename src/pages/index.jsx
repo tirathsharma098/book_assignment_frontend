@@ -9,6 +9,8 @@ import Home from "./home/Home";
 import UserList from "./admin/UserList.jsx";
 import BookList from "./BookList.jsx";
 import BookDetail from "./BookDetail.jsx";
+import BookSold from "./BookSold.jsx";
+import { UserDetail } from "./admin/UserDetail.jsx";
 
 const router = createBrowserRouter([
     {
@@ -31,7 +33,10 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "users",
-                        element: <UserList />,
+                        children: [
+                            {index: true, element: <UserList />},
+                            {path: ":userAction/:userId", element: <UserDetail/>}
+                        ]
                     },
                 ],
             },
@@ -41,7 +46,10 @@ const router = createBrowserRouter([
                     {index: true, element: <BookList/>},
                     { path: ":bookAction/:bookId", element: <BookDetail /> },
                 ],
-            },
+            },{
+                path: "book-sold",
+                element: <BookSold/>
+            }
         ],
     },
     {
