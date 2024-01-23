@@ -4,7 +4,7 @@ import RootLayout from "../layouts/Root";
 import NotFound from "./NotFound";
 import { checkAuthLoader } from "../utils/auth.js";
 import SystemError from "./error/SystemError";
-import Logout, { action as logoutAction } from "./Logout";
+import Logout from "./Logout";
 import Home from "./home/Home";
 import UserList from "./admin/UserList.jsx";
 import BookList from "./BookList.jsx";

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
@@ -17,7 +16,6 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [mobile, setMobile] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
     let submit = useSubmit();
     const navigate = useNavigate();
     // custom hook to send api req
@@ -61,11 +59,10 @@ const Login = (props) => {
                 username: username,
                 password: password,
                 mode: props.authPage,
-                remember_me: rememberMe,
             },
             { method: "post", encType: "application/json" }
         );
-    }, [username, password, props.authPage, rememberMe, submit]);
+    }, [username, password, props.authPage, submit]);
 
     return (
         <div>
@@ -133,23 +130,7 @@ const Login = (props) => {
                                             className="p-inputtext-sm w-full md:w-30rem mb-3"
                                             inputClassName="w-full md:w-30rem"
                                         />
-                                        <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                                            <div className="flex align-items-center">
-                                                <Checkbox
-                                                    inputId="remember_me"
-                                                    checked={rememberMe}
-                                                    onChange={(e) =>
-                                                        setRememberMe(
-                                                            e.checked ?? false
-                                                        )
-                                                    }
-                                                    className="mr-2"
-                                                />
-                                                <label htmlFor="remember_me">
-                                                    Remember me
-                                                </label>
-                                            </div>
-                                        </div>
+                                        
                                     </>
                                 )}
                                 {props.authPage === FORM_TYPE.VERIFY_EMAIL && (

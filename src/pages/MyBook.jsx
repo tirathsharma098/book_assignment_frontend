@@ -1,23 +1,14 @@
 
-import React, { useCallback, useEffect, useState } from "react";
-import { InputText } from "primereact/inputtext";
+import React, { useEffect } from "react";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Dialog } from "primereact/dialog";
 import useHttp from "../hooks/useHttp";
 import headerCommon from "../config/common-headers";
 import { ApiConfig } from "../config/api-config-class";
 import {
-    apiBookAdd,
-    apiBookApprove,
-    apiBookBuy,
-    apiBookDelete,
-    apiBookList,
-    apiGetBookSold,
     apiGetMyBooks,
 } from "../services/book";
-import { BUTTON_ACTIONS } from "../utils/constants";
 
 const MyBookTable = React.memo(({myBookData}) => {
     const actionBodyTemplate = (rowData) => {
