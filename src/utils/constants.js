@@ -4,7 +4,11 @@ const BUTTON_ACTIONS = {
   add: 'add',
   delete: 'delete',
 };
-const USER_STATUS = ['inactive', 'active'];
+const USER_STATUS = {
+  ACTIVE : 'active',
+  INACTIVE: 'inactive'
+}
+
 const DATE_FORMAT = 'D MMM YY';
 const DB_DATE = 'YYYY-MM-DD';
 const AXIOS_ERROR_CODE = {

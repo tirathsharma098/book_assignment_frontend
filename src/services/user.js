@@ -79,7 +79,18 @@ async function apiUserLogOut(config) {
         },
     });
 }
-
+async function apiUserStatusUpdate(config) {
+    return await axios({
+        url: API.endpoint + `/user/update-user-status/${config.params.userId}`,
+        method: "PUT",
+        data: {
+            ...config.data,
+        },
+        headers: {
+            ...config.headers,
+        },
+    });
+}
 export {
     apiUserList,
     apiUserAdd,
@@ -87,5 +98,6 @@ export {
     apiUserUpdate,
     apiUserSignUp,
     apiGetMyProfile,
-    apiUserLogOut
+    apiUserLogOut,
+    apiUserStatusUpdate
 };

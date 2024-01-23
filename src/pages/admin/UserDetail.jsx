@@ -3,13 +3,10 @@ import {
     useNavigate,
     useParams,
 } from "react-router-dom";
-import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { BUTTON_ACTIONS, USER_STATUS } from "../../utils/constants";
-import { Checkbox } from "primereact/checkbox";
+import { useEffect, useState } from "react";
+import { BUTTON_ACTIONS } from "../../utils/constants";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import useHttp from "../../hooks/useHttp";
 import { ApiConfig } from "../../config/api-config-class";

@@ -4,17 +4,31 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { ALL_USER_TYPE, BUTTON_ACTIONS } from "../../utils/constants";
+import {
+    ALL_USER_TYPE,
+    BUTTON_ACTIONS,
+    USER_STATUS,
+} from "../../utils/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import useHttp from "../../hooks/useHttp";
-import { apiUserAdd, apiUserList } from "../../services/user";
+import {
+    apiUserAdd,
+    apiUserList,
+    apiUserStatusUpdate,
+} from "../../services/user";
 import headerCommon from "../../config/common-headers";
 import { ApiConfig } from "../../config/api-config-class";
 
 const UserListTable = React.memo(
-    ({ usersData, onSortingUser, sortField, sortOrder }) => {
+    ({
+        usersData,
+        onSortingUser,
+        sortField,
+        sortOrder,
+        onUpdatingUserStatus,
+    }) => {
         const location = useLocation();
         const navigate = useNavigate();
         const navigatePageHandler = (buttonAction, userId) => {
@@ -45,7 +59,10 @@ const UserListTable = React.memo(
                         }}
                         size="small"
                         onClick={() =>
-                            navigatePageHandler(BUTTON_ACTIONS.view, rowData._id)
+                            navigatePageHandler(
+                                BUTTON_ACTIONS.view,
+                                rowData._id
+                            )
                         }
                     />
                     <Button
@@ -85,6 +102,36 @@ const UserListTable = React.memo(
                         }
                     />
                 </>
+            );
+        };
+        const statusBodyTemplate = (rowData) => {
+            return (
+                <Button
+                    rounded
+                    severity={
+                        rowData.status === USER_STATUS.ACTIVE
+                            ? "success"
+                            : "primary"
+                    }
+                    style={{
+                        marginLeft: "2px",
+                        padding: "10px",
+                        height: "25px",
+                    }}
+                    size="small"
+                    onClick={() =>
+                        onUpdatingUserStatus(
+                            rowData._id,
+                            rowData.status === USER_STATUS.ACTIVE
+                                ? USER_STATUS.INACTIVE
+                                : USER_STATUS.ACTIVE
+                        )
+                    }
+                >
+                    {rowData.status === USER_STATUS.ACTIVE
+                        ? "Active"
+                        : "Inactive"}
+                </Button>
             );
         };
         return (
@@ -132,10 +179,9 @@ const UserListTable = React.memo(
                     sortable
                 />
                 <Column
-                    field="status"
                     header="Status"
                     align="center"
-                    sortable
+                    body={statusBodyTemplate}
                 />
                 <Column
                     header="Action"
@@ -178,6 +224,11 @@ const UserList = () => {
         isLoading: isUserAdding,
         apiFunc: addUserFunc,
     } = useHttp();
+    const {
+        response: updateUserStatusData,
+        isLoading: isUserStatusUpdating,
+        apiFunc: updateUserStatusFunc,
+    } = useHttp();
     // Setting search params for search input
     useEffect(() => {
         if (!searchValue) {
@@ -213,6 +264,7 @@ const UserList = () => {
         sortOrder,
         searchValueNow,
         addUserResponse,
+        updateUserStatusData
     ]);
     // Resetting form data if form submitted
     useEffect(() => {
@@ -252,6 +304,20 @@ const UserList = () => {
                 headerCommon()
             ),
             "POST"
+        );
+    };
+    const onUpdatingUserStatus = (userId, status) => {
+        updateUserStatusFunc(
+            apiUserStatusUpdate,
+            new ApiConfig(
+                {
+                    status,
+                },
+                {},
+                headerCommon(),
+                { userId }
+            ),
+            "PUT"
         );
     };
     return (
@@ -417,6 +483,7 @@ const UserList = () => {
                     onSortingUser={onSortingUser}
                     sortField={sortField}
                     sortOrder={sortOrder}
+                    onUpdatingUserStatus={onUpdatingUserStatus}
                 />
             )}
         </>
