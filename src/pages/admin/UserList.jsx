@@ -21,191 +21,145 @@ import {
 import headerCommon from "../../config/common-headers";
 import { ApiConfig } from "../../config/api-config-class";
 
-const UserListTable = React.memo(
-    ({
-        usersData,
-        onSortingUser,
-        sortField,
-        sortOrder,
-        onUpdatingUserStatus,
-    }) => {
-        const location = useLocation();
-        const navigate = useNavigate();
-        const navigatePageHandler = (buttonAction, userId) => {
-            const currentPath =
-                location.pathname +
-                "/" +
-                (buttonAction === BUTTON_ACTIONS.delete
-                    ? BUTTON_ACTIONS.delete
-                    : buttonAction === BUTTON_ACTIONS.update
-                    ? BUTTON_ACTIONS.update
-                    : BUTTON_ACTIONS.view) +
-                "/" +
-                userId;
-            navigate(currentPath);
-        };
-        const actionBodyTemplate = (rowData) => {
-            return (
-                <>
-                    <Button
-                        icon="pi pi-eye"
-                        rounded
-                        severity="primary"
-                        style={{
-                            marginLeft: "2px",
-                            padding: "0px",
-                            width: "25px",
-                            height: "25px",
-                        }}
-                        size="small"
-                        onClick={() =>
-                            navigatePageHandler(
-                                BUTTON_ACTIONS.view,
-                                rowData._id
-                            )
-                        }
-                    />
-                    <Button
-                        icon="pi pi-pencil"
-                        rounded
-                        severity="warning"
-                        size="small"
-                        style={{
-                            marginLeft: "2px",
-                            padding: "0px",
-                            width: "25px",
-                            height: "25px",
-                        }}
-                        onClick={() =>
-                            navigatePageHandler(
-                                BUTTON_ACTIONS.update,
-                                rowData._id
-                            )
-                        }
-                    />
-                    <Button
-                        icon="pi pi-trash"
-                        rounded
-                        severity="danger"
-                        size="small"
-                        style={{
-                            marginLeft: "2px",
-                            padding: "0px",
-                            width: "25px",
-                            height: "25px",
-                        }}
-                        onClick={() =>
-                            navigatePageHandler(
-                                BUTTON_ACTIONS.delete,
-                                rowData._id
-                            )
-                        }
-                    />
-                </>
-            );
-        };
-        const statusBodyTemplate = (rowData) => {
-            return (
+const UserListTable = React.memo(({ usersData, onUpdatingUserStatus }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const navigatePageHandler = (buttonAction, userId) => {
+        const currentPath =
+            location.pathname +
+            "/" +
+            (buttonAction === BUTTON_ACTIONS.delete
+                ? BUTTON_ACTIONS.delete
+                : buttonAction === BUTTON_ACTIONS.update
+                ? BUTTON_ACTIONS.update
+                : BUTTON_ACTIONS.view) +
+            "/" +
+            userId;
+        navigate(currentPath);
+    };
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <>
                 <Button
+                    icon="pi pi-eye"
                     rounded
-                    severity={
-                        rowData.status === USER_STATUS.ACTIVE
-                            ? "success"
-                            : "primary"
-                    }
+                    severity="primary"
                     style={{
                         marginLeft: "2px",
-                        padding: "10px",
+                        padding: "0px",
+                        width: "25px",
                         height: "25px",
                     }}
                     size="small"
                     onClick={() =>
-                        onUpdatingUserStatus(
-                            rowData._id,
-                            rowData.status === USER_STATUS.ACTIVE
-                                ? USER_STATUS.INACTIVE
-                                : USER_STATUS.ACTIVE
-                        )
+                        navigatePageHandler(BUTTON_ACTIONS.view, rowData._id)
                     }
-                >
-                    {rowData.status === USER_STATUS.ACTIVE
-                        ? "Active"
-                        : "Inactive"}
-                </Button>
-            );
-        };
+                />
+                <Button
+                    icon="pi pi-pencil"
+                    rounded
+                    severity="warning"
+                    size="small"
+                    style={{
+                        marginLeft: "2px",
+                        padding: "0px",
+                        width: "25px",
+                        height: "25px",
+                    }}
+                    onClick={() =>
+                        navigatePageHandler(BUTTON_ACTIONS.update, rowData._id)
+                    }
+                />
+                <Button
+                    icon="pi pi-trash"
+                    rounded
+                    severity="danger"
+                    size="small"
+                    style={{
+                        marginLeft: "2px",
+                        padding: "0px",
+                        width: "25px",
+                        height: "25px",
+                    }}
+                    onClick={() =>
+                        navigatePageHandler(BUTTON_ACTIONS.delete, rowData._id)
+                    }
+                />
+            </>
+        );
+    };
+    const statusBodyTemplate = (rowData) => {
         return (
-            // <div style={{ textAlign: 'center' }}>
-            <DataTable
-                value={usersData ? usersData : []}
-                tableStyle={{
-                    marginLeft: "4px",
-                    marginTop: "4px",
-                    borderTop: "1px solid 	#cccccc",
-                    // textAlign: 'center',
+            <Button
+                rounded
+                severity={
+                    rowData.status === USER_STATUS.ACTIVE
+                        ? "success"
+                        : "primary"
+                }
+                style={{
+                    marginLeft: "2px",
+                    padding: "10px",
+                    height: "25px",
                 }}
                 size="small"
-                removableSort
-                paginator
-                rows={50}
-                emptyMessage="Users not found"
-                sortField={sortField}
-                sortOrder={sortOrder}
-                onSort={onSortingUser}
+                onClick={() =>
+                    onUpdatingUserStatus(
+                        rowData._id,
+                        rowData.status === USER_STATUS.ACTIVE
+                            ? USER_STATUS.INACTIVE
+                            : USER_STATUS.ACTIVE
+                    )
+                }
             >
-                <Column
-                    header="#"
-                    body={(data, options) => options.rowIndex + 1}
-                    style={{ width: "5%" }}
-                    align="center"
-                />
-                <Column
-                    field="full_name"
-                    header="Name"
-                    align="center"
-                    sortable
-                />
-                <Column
-                    field="username"
-                    header="Username"
-                    align="center"
-                    sortable
-                />
-                <Column field="email" header="Email" align="center" sortable />
-                <Column
-                    field="user_type"
-                    header="User Type"
-                    align="center"
-                    sortable
-                />
-                <Column
-                    header="Status"
-                    align="center"
-                    body={statusBodyTemplate}
-                />
-                <Column
-                    header="Action"
-                    body={actionBodyTemplate}
-                    align="center"
-                />
-            </DataTable>
-            // </div>
+                {rowData.status === USER_STATUS.ACTIVE ? "Active" : "Inactive"}
+            </Button>
         );
-    }
-);
+    };
+    return (
+        // <div style={{ textAlign: 'center' }}>
+        <DataTable
+            value={usersData ? usersData : []}
+            tableStyle={{
+                marginLeft: "4px",
+                marginTop: "4px",
+                borderTop: "1px solid 	#cccccc",
+                // textAlign: 'center',
+            }}
+            size="small"
+            emptyMessage="Users not found"
+        >
+            <Column
+                header="#"
+                body={(data, options) => options.rowIndex + 1}
+                style={{ width: "5%" }}
+                align="center"
+            />
+            <Column field="full_name" header="Name" align="center" sortable />
+            <Column
+                field="username"
+                header="Username"
+                align="center"
+                sortable
+            />
+            <Column field="email" header="Email" align="center" sortable />
+            <Column
+                field="user_type"
+                header="User Type"
+                align="center"
+                sortable
+            />
+            <Column header="Status" align="center" body={statusBodyTemplate} />
+            <Column header="Action" body={actionBodyTemplate} align="center" />
+        </DataTable>
+        // </div>
+    );
+});
 
 const UserList = () => {
     const actionData = useActionData();
-    const [searchValue, setSearchValue] = useState("");
-    const [searchValueNow, setSearchValueNow] = useState("");
-    const [searchTimeOutId, setSearchTimeOutId] = useState();
     // setting state
     const [showForm, setShowForm] = useState(false);
-    // setting state for filter
-    const [perPage, setPerPage] = useState(50);
-    const [pageNumber, setPageNumber] = useState(1);
-    const [sortField, setSortField] = useState("");
-    const [sortOrder, setSortOrder] = useState("DESC");
     // setting state for form
     const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
@@ -229,43 +183,10 @@ const UserList = () => {
         isLoading: isUserStatusUpdating,
         apiFunc: updateUserStatusFunc,
     } = useHttp();
-    // Setting search params for search input
-    useEffect(() => {
-        if (!searchValue) {
-            return;
-        }
-        clearTimeout(searchTimeOutId);
-        const clearTimeoutId = setTimeout(() => {
-            setSearchValueNow(searchValue);
-        }, 1000);
-        setSearchTimeOutId(clearTimeoutId);
-    }, [searchValue]);
     // getting users data
     useEffect(() => {
-        fetchUserData(
-            apiUserList,
-            new ApiConfig(
-                {},
-                {
-                    per_page: perPage,
-                    page_number: pageNumber,
-                    sort_field: sortField,
-                    sort_order: sortOrder,
-                    search_term: searchValueNow,
-                },
-                headerCommon()
-            )
-        );
-    }, [
-        fetchUserData,
-        perPage,
-        pageNumber,
-        sortField,
-        sortOrder,
-        searchValueNow,
-        addUserResponse,
-        updateUserStatusData
-    ]);
+        fetchUserData(apiUserList, new ApiConfig({}, {}, headerCommon()));
+    }, [fetchUserData, addUserResponse, updateUserStatusData]);
     // Resetting form data if form submitted
     useEffect(() => {
         if (actionData?.success === true || showForm === false) {
@@ -277,16 +198,6 @@ const UserList = () => {
             setPassword("");
         }
     }, [actionData, showForm]);
-    const onSortingUser = useCallback((event) => {
-        const orderNow =
-            event.sortOrder === 1
-                ? "ASC"
-                : event.sortOrder === -1
-                ? "DESC"
-                : "";
-        setSortField(event.sortField);
-        setSortOrder(orderNow);
-    }, []);
     // Submitting form
     const onAdding = () => {
         addUserFunc(
@@ -323,23 +234,12 @@ const UserList = () => {
     return (
         <>
             <div className="flex flex-wrap grid -mx-1 -mt-1">
-                <div className="flex col-4 justify-content-start">
-                    <div className="p-input-icon-left ">
-                        <i className="pi pi-search" />
-                        <InputText
-                            placeholder="Search"
-                            name="search_term"
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            className="p-inputtext-sm"
-                        />
-                    </div>
-                </div>
-                <div className="flex col-4 justify-content-center">
+                <div className="flex col-10 justify-content-center">
                     <div className="flex align-self-center">
                         <h4 className="page-main-title">Faculty List</h4>
                     </div>
                 </div>
-                <div className="flex col-4 justify-content-end">
+                <div className="flex col-2 justify-content-end">
                     <Button
                         label="+Add"
                         severity="info"
@@ -480,9 +380,6 @@ const UserList = () => {
             {usersData && (
                 <UserListTable
                     usersData={usersData}
-                    onSortingUser={onSortingUser}
-                    sortField={sortField}
-                    sortOrder={sortOrder}
                     onUpdatingUserStatus={onUpdatingUserStatus}
                 />
             )}
