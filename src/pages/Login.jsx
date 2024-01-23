@@ -9,6 +9,7 @@ import { handleAxiosError, responseHandler } from '../utils/responseHandler';
 const FORM_TYPE = {
   LOGIN: 'login',
   VERIFY_EMAIL: 'verify-email',
+  SIGNUP: "signup"
 };
 
 const LoginPage = (props) => {

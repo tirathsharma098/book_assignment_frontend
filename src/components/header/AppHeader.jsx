@@ -17,10 +17,9 @@ const AppHeader = () => {
       label: 'Profile',
       icon: 'pi pi-user',
       command: (e) => {
-        navigate('/user-profile-new');
+        navigate('/user-profile');
       },
     },
-    { label: 'Settings', icon: 'pi pi-cog' },
     { separator: true },
     {
       label: 'Logout',

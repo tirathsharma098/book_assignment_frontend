@@ -14,6 +14,11 @@ const ALL_USER_TYPE = [
   { value: 'admin', type: 'Admin' },
   { value: 'customer', type: 'Customer' }
 ];
+const USER_TYPE = {
+  SUPER_ADMIN:"super_admin",
+  ADMIN : "admin",
+  CUSTOMER: "customer"
+}
 export {
   BUTTON_ACTIONS,
   USER_STATUS,
@@ -21,4 +26,5 @@ export {
   AXIOS_ERROR_CODE,
   DB_DATE,
   ALL_USER_TYPE,
+  USER_TYPE
 };

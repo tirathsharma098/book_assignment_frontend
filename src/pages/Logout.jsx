@@ -1,15 +1,22 @@
-import axios from 'axios';
-import { json, redirect, useSubmit } from 'react-router-dom';
-import { getAuthToken } from '../utils/auth';
-import { API } from '../config/api/api.config';
-import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import useHttp from '../hooks/useHttp';
+import { apiUserLogOut } from '../services/user';
+import { ApiConfig } from '../config/api-config-class';
+import headerCommon from '../config/common-headers';
+import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
-  let submit = useSubmit();
+  const navigate = useNavigate();
+  const {
+    response: userLoggedOutResponse,
+    isLoading: isUserLoggingOut,
+    apiFunc: userLogOutFunc,
+} = useHttp();
   useEffect(() => {
-    submit({}, { method: 'put' });
-  }, []);
+    userLogOutFunc(apiUserLogOut, new ApiConfig({},{},headerCommon()), "PUT");
+    localStorage.clear();
+    navigate('/login');
+  }, [userLogOutFunc]);
   return (
     <p>
       <i>Logging out ...</i>
@@ -17,21 +24,3 @@ const Logout = () => {
   );
 };
 export default Logout;
-export async function action() {
-  const token = getAuthToken();
-  const response = await axios({
-    method: 'put',
-    url: API.endpoint + '/user/logout',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-    validateStatus: () => true,
-  });
-  if (response.status !== 200) throw json({ message: 'Something went wrong' });
-  localStorage.clear();
-  toast.success('You logged out successfully', {
-    position: toast.POSITION.TOP_RIGHT,
-  });
-  return redirect('/');
-}

@@ -11,6 +11,8 @@ import BookList from "./BookList.jsx";
 import BookDetail from "./BookDetail.jsx";
 import BookSold from "./BookSold.jsx";
 import { UserDetail } from "./admin/UserDetail.jsx";
+import MyBook from "./MyBook.jsx";
+import UserProfile from "./UserProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home />,
+            },
+            {
+                path: "/user-profile",
+                element: <UserProfile/>
             },
             {
                 path: "admin",
@@ -49,13 +55,15 @@ const router = createBrowserRouter([
             },{
                 path: "book-sold",
                 element: <BookSold/>
+            },{
+                path: "my-books",
+                element: <MyBook/>
             }
         ],
     },
     {
         path: "/logout",
         element: <Logout />,
-        action: logoutAction,
     },
     {
         path: "*",

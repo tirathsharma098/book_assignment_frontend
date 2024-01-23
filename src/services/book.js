@@ -85,6 +85,15 @@ async function apiBookApprove(config) {
       },
   });
 }
+async function apiGetMyBooks(config) {
+    return await axios({
+        url: API.endpoint + "/book/my-books",
+        method: "GET",
+        headers: {
+            ...config.headers,
+        },
+    });
+  }
 export {
     apiBookAdd,
     apiBookList,
@@ -93,5 +102,6 @@ export {
     apiBookDelete,
     apiBookBuy,
     apiGetBookSold,
-    apiBookApprove
+    apiBookApprove,
+    apiGetMyBooks
 };

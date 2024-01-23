@@ -15,33 +15,32 @@ import {
     apiBookDelete,
     apiBookList,
     apiGetBookSold,
+    apiGetMyBooks,
 } from "../services/book";
 import { BUTTON_ACTIONS } from "../utils/constants";
 
-const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
+const MyBookTable = React.memo(({myBookData}) => {
     const actionBodyTemplate = (rowData) => {
         return (
             <>
                 <Button
-                    icon="pi pi-check"
                     rounded
                     severity={rowData.approved? "success": "primary"}
                     style={{
                         marginLeft: "2px",
-                        padding: "0px",
-                        width: "25px",
+                        padding: "10px",
                         height: "25px",
                     }}
                     size="small"
-                    onClick={() => onApproved(rowData._id)}
-                />
+                    disabled={true}
+                > {rowData.approved? "Approved": "Pending"} </Button>
             </>
         );
     };
     return (
         // <div style={{ textAlign: 'center' }}>
         <DataTable
-            value={bookSoldData ? bookSoldData : []}
+            value={myBookData ? myBookData : []}
             tableStyle={{
                 marginLeft: "4px",
                 marginTop: "4px",
@@ -60,9 +59,6 @@ const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
                 style={{ width: "5%" }}
                 align="center"
             />
-            <Column field="user.full_name" header="Name" align="center" />
-            <Column field="user.username" header="Username" align="center" />
-            <Column field="user.email" header="Email" align="center" />
             <Column field="book.title" header="Title" align="center" />
             <Column field="book.author" header="Author" align="center" />
             <Column field="book.price" header="Price" align="center" />
@@ -72,43 +68,30 @@ const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
     );
 });
 
-export default function BookSold() {
+export default function MyBook() {
     // setting state for form
     const {
-        response: bookSoldData,
-        isLoading: isBookSoldFetching,
-        apiFunc: getBookSoldFunc,
-    } = useHttp();
-    const {
-        response: bookApproveData,
-        isLoading: isBookApproving,
-        apiFunc: approveBookFunc,
+        response: myBookData,
+        isLoading: isMyBookFetching,
+        apiFunc: getMyBookFunc,
     } = useHttp();
     // getting books data
     useEffect(() => {
-        getBookSoldFunc(apiGetBookSold, new ApiConfig({}, {}, headerCommon()));
-    }, [getBookSoldFunc, bookApproveData]);
+        getMyBookFunc(apiGetMyBooks, new ApiConfig({}, {}, headerCommon()));
+    }, [getMyBookFunc]);
     
-    const onApproved = (id) => {
-        approveBookFunc(
-            apiBookApprove,
-            new ApiConfig({}, {}, headerCommon(), { id }),
-            "PUT"
-        );
-    };
     return (
         <>
             <div className="flex flex-wrap grid -mx-1 -mt-1">
                 <div className="flex col-12 justify-content-center">
-                    <div className="flex align-self-center">
-                        <h4 className="page-main-title">Book Sold</h4>
+                    <div className="flex ">
+                        <h4 className="page-main-title">Book Bought</h4>
                     </div>
                     </div>
             </div>
-            {bookSoldData && (
-                <BookSoldListTable
-                bookSoldData={bookSoldData}
-                    onApproved={onApproved}
+            {myBookData && (
+                <MyBookTable
+                myBookData={myBookData}
                 />
             )}
         </>

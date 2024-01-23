@@ -49,5 +49,43 @@ async function apiUserUpdate(config) {
         },
     });
 }
+async function apiUserSignUp(config) {
+    return await axios({
+        url: API.endpoint + `/user/signup`,
+        method: "POST",
+        data: {
+            ...config.data,
+        },
+        headers: {
+            ...config.headers,
+        },
+    });
+}
+async function apiGetMyProfile(config) {
+    return await axios({
+        url: API.endpoint + "/user/my-profile",
+        method: "GET",
+        headers: {
+            ...config.headers,
+        },
+    });
+}
+async function apiUserLogOut(config) {
+    return await axios({
+        url: API.endpoint + "/user/logout",
+        method: "PUT",
+        headers: {
+            ...config.headers,
+        },
+    });
+}
 
-export { apiUserList, apiUserAdd, apiGetUserDetail, apiUserUpdate };
+export {
+    apiUserList,
+    apiUserAdd,
+    apiGetUserDetail,
+    apiUserUpdate,
+    apiUserSignUp,
+    apiGetMyProfile,
+    apiUserLogOut
+};

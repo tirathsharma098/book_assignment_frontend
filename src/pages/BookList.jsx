@@ -14,9 +14,10 @@ import {
     apiBookDelete,
     apiBookList,
 } from "../services/book";
-import { BUTTON_ACTIONS } from "../utils/constants";
+import { BUTTON_ACTIONS, USER_TYPE } from "../utils/constants";
 
 const BookListTable = React.memo(({ books, onDeleting, onBookBought }) => {
+    const userTypeGot = localStorage.getItem("user_type");
     const location = useLocation();
     const navigate = useNavigate();
     const navigatePageHandler = (buttonAction, bookId) => {
@@ -63,34 +64,44 @@ const BookListTable = React.memo(({ books, onDeleting, onBookBought }) => {
                         navigatePageHandler(BUTTON_ACTIONS.view, rowData._id)
                     }
                 />
-                <Button
-                    icon="pi pi-pencil"
-                    rounded
-                    severity="warning"
-                    size="small"
-                    style={{
-                        marginLeft: "2px",
-                        padding: "0px",
-                        width: "25px",
-                        height: "25px",
-                    }}
-                    onClick={() =>
-                        navigatePageHandler(BUTTON_ACTIONS.update, rowData._id)
-                    }
-                />
-                <Button
-                    icon="pi pi-trash"
-                    rounded
-                    severity="danger"
-                    size="small"
-                    style={{
-                        marginLeft: "2px",
-                        padding: "0px",
-                        width: "25px",
-                        height: "25px",
-                    }}
-                    onClick={() => onDeleting(rowData._id)}
-                />
+                {userTypeGot === USER_TYPE.SUPER_ADMIN ||
+                userTypeGot === USER_TYPE.ADMIN ? (
+                    <>
+                        <Button
+                            icon="pi pi-pencil"
+                            rounded
+                            severity="warning"
+                            size="small"
+                            style={{
+                                marginLeft: "2px",
+                                padding: "0px",
+                                width: "25px",
+                                height: "25px",
+                            }}
+                            onClick={() =>
+                                navigatePageHandler(
+                                    BUTTON_ACTIONS.update,
+                                    rowData._id
+                                )
+                            }
+                        />
+                        <Button
+                            icon="pi pi-trash"
+                            rounded
+                            severity="danger"
+                            size="small"
+                            style={{
+                                marginLeft: "2px",
+                                padding: "0px",
+                                width: "25px",
+                                height: "25px",
+                            }}
+                            onClick={() => onDeleting(rowData._id)}
+                        />
+                    </>
+                ) : (
+                    ""
+                )}
             </>
         );
     };
@@ -191,12 +202,12 @@ export default function BookList() {
     return (
         <>
             <div className="flex flex-wrap grid -mx-1 -mt-1">
-                <div className="flex col-8 justify-content-center">
+                <div className="flex col-10 justify-content-center">
                     <div className="flex align-self-center">
                         <h4 className="page-main-title">Book List</h4>
                     </div>
                 </div>
-                <div className="flex col-4 justify-content-end">
+                <div className="flex col-2 justify-content-end">
                     <Button
                         label="+Add"
                         severity="info"
