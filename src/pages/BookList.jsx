@@ -36,19 +36,21 @@ const BookListTable = React.memo(({ books, onDeleting, onBookBought }) => {
     const actionBodyTemplate = (rowData) => {
         return (
             <>
-                <Button
-                    icon="pi pi-cart-plus"
-                    rounded
-                    severity="success"
-                    style={{
-                        marginLeft: "2px",
-                        padding: "0px",
-                        width: "25px",
-                        height: "25px",
-                    }}
-                    size="small"
-                    onClick={() => onBookBought(rowData._id)}
-                />
+                {userTypeGot === USER_TYPE.CUSTOMER && (
+                    <Button
+                        icon="pi pi-cart-plus"
+                        rounded
+                        severity="success"
+                        style={{
+                            marginLeft: "2px",
+                            padding: "0px",
+                            width: "25px",
+                            height: "25px",
+                        }}
+                        size="small"
+                        onClick={() => onBookBought(rowData._id)}
+                    />
+                )}
                 <Button
                     icon="pi pi-eye"
                     rounded
@@ -85,19 +87,21 @@ const BookListTable = React.memo(({ books, onDeleting, onBookBought }) => {
                                 )
                             }
                         />
-                        <Button
-                            icon="pi pi-trash"
-                            rounded
-                            severity="danger"
-                            size="small"
-                            style={{
-                                marginLeft: "2px",
-                                padding: "0px",
-                                width: "25px",
-                                height: "25px",
-                            }}
-                            onClick={() => onDeleting(rowData._id)}
-                        />
+                        {userTypeGot === USER_TYPE.SUPER_ADMIN && (
+                            <Button
+                                icon="pi pi-trash"
+                                rounded
+                                severity="danger"
+                                size="small"
+                                style={{
+                                    marginLeft: "2px",
+                                    padding: "0px",
+                                    width: "25px",
+                                    height: "25px",
+                                }}
+                                onClick={() => onDeleting(rowData._id)}
+                            />
+                        )}
                     </>
                 ) : (
                     ""
@@ -119,7 +123,7 @@ const BookListTable = React.memo(({ books, onDeleting, onBookBought }) => {
             removableSort
             paginator
             rows={50}
-            emptyMessage="Users not found"
+            emptyMessage="Book not found"
         >
             <Column
                 header="#"

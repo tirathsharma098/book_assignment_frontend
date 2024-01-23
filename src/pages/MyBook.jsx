@@ -51,7 +51,7 @@ const MyBookTable = React.memo(({myBookData}) => {
             removableSort
             paginator
             rows={50}
-            emptyMessage="Users not found"
+            emptyMessage="Books not found"
         >
             <Column
                 header="#"

@@ -1,22 +1,15 @@
 
-import React, { useCallback, useEffect, useState } from "react";
-import { InputText } from "primereact/inputtext";
+import React, { useEffect } from "react";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Dialog } from "primereact/dialog";
 import useHttp from "../hooks/useHttp";
 import headerCommon from "../config/common-headers";
 import { ApiConfig } from "../config/api-config-class";
 import {
-    apiBookAdd,
     apiBookApprove,
-    apiBookBuy,
-    apiBookDelete,
-    apiBookList,
     apiGetBookSold,
 } from "../services/book";
-import { BUTTON_ACTIONS } from "../utils/constants";
 
 const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
     const actionBodyTemplate = (rowData) => {
@@ -33,6 +26,7 @@ const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
                         height: "25px",
                     }}
                     size="small"
+                    disabled={rowData.approved}
                     onClick={() => onApproved(rowData._id)}
                 />
             </>
@@ -52,7 +46,7 @@ const BookSoldListTable = React.memo(({bookSoldData, onApproved}) => {
             removableSort
             paginator
             rows={50}
-            emptyMessage="Users not found"
+            emptyMessage="Book not found"
         >
             <Column
                 header="#"
